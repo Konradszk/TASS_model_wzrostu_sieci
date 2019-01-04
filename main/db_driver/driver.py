@@ -11,7 +11,5 @@ class Driver:
     def __connect(self):
         self.__db_client = pymongo.MongoClient(self.__url)
         self.db = self.__db_client['TASS']
-        print('working')
-        print(self.__db_client.list_database_names())
         if 'TASS' in self.__db_client.list_database_names():
             print('DB cConnection property has been initialized')
