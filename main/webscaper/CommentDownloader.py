@@ -21,7 +21,8 @@ class CommentDownloader:
     def __prepare_web_page(self):
         browser = webdriver.Chrome()
         browser.get(self.__url)
-        browser.implicitly_wait(10)
+        time.sleep(10)
+        browser.implicitly_wait(40)
         browser.find_element_by_class_name('rodo-popup-agree').click()
         WebDriverWait(browser, 10).until(
             EC.presence_of_element_located((By.ID, 'comments4-1'))
@@ -29,7 +30,6 @@ class CommentDownloader:
         self.__expand_all_comment(browser)
         element = browser.find_element_by_class_name('forum__list')
         self.get_comments(element.get_attribute('innerHTML'))
-        time.sleep(10)
         # dodać przewijanie stron
         browser.quit()
 
@@ -44,12 +44,13 @@ class CommentDownloader:
         comments = {}
         for comment in comment_div:
             data = {'name': comment.find(class_='forum__comment-author-name').text,
-                    'date': comment.find(class_='forum__comment-author-date').text,
-                    'voteup': comment.find(class_='forum__comment-action--voteup').text,
-                    'votedown': comment.find(class_='forum__comment-action--votedown').text}
+                    'replay': []
+                    }
+            replays = comment.find_all(class_='forum__comment', recursive=True)
+            for replay in replays:
+                replay_author = replay.find(class_='forum__comment-author-name').text
+                data['replay'].append(replay_author)
             comments[data['name']] = data
 
         json_comments = json.dumps(comments)
         print(json_comments)
-        print(len(comment_div))
-        # trzeba dodać mechanizm łapania zagnieżdzeń
