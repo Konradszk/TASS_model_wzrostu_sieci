@@ -16,10 +16,6 @@ class CommentDownloader:
         self.comment_data = {}
         self.soup = None
 
-    def __get_page(self):
-        self.get_comment_data()
-        return ''
-
     def get_comment_data(self):
         browser = webdriver.Chrome()
         browser.get(self.__url)
