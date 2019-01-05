@@ -34,7 +34,7 @@ class CommentDownloader:
             except TimeoutException:
                 is_next_page = False
         browser.quit()
-        return json.dumps(self.comment_data)
+        return self.comment_data
 
     def __prepare_web_page(self, browser):
         WebDriverWait(browser, 10).until(
@@ -60,12 +60,12 @@ class CommentDownloader:
         comment_div = self.soup.find_all(class_='forum__comment', recursive=False)
         comments = {}
         for comment in comment_div:
-            data = {'name': comment.find(class_='forum__comment-author-name').text,
+            data = {'name': comment.find(class_='forum__comment-author-name').text.replace('.', ''),
                     'replay': []
                     }
             replays = comment.find_all(class_='forum__comment', recursive=True)
             for replay in replays:
-                replay_author = replay.find(class_='forum__comment-author-name').text
+                replay_author = replay.find(class_='forum__comment-author-name').text.replace('.', '')
                 data['replay'].append(replay_author)
             comments[data['name']] = data
         self.comment_data.update(comments)
