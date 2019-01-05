@@ -27,10 +27,10 @@ class CommentDownloader:
             EC.presence_of_element_located((By.ID, 'comments4-1'))
         )
         self.__expand_all_comment(browser)
-        element = browser.find_element_by_id('comments4-1')
+        element = browser.find_element_by_class_name('forum__list')
         self.get_comments(element.get_attribute('innerHTML'))
         time.sleep(10)
-        #dodać przewijanie stron
+        # dodać przewijanie stron
         browser.quit()
 
     def __expand_all_comment(self, browser):
@@ -40,7 +40,7 @@ class CommentDownloader:
 
     def get_comments(self, html):
         self.soup = BeautifulSoup(html, 'html.parser')
-        comment_div = self.soup.find_all(class_='forum__comment')
+        comment_div = self.soup.find_all(class_='forum__comment', recursive=False)
         comments = {}
         for comment in comment_div:
             data = {'name': comment.find(class_='forum__comment-author-name').text,
@@ -52,4 +52,4 @@ class CommentDownloader:
         json_comments = json.dumps(comments)
         print(json_comments)
         print(len(comment_div))
-        #trzeba dodać mechanizm łapania zagnieżdzeń
+        # trzeba dodać mechanizm łapania zagnieżdzeń
