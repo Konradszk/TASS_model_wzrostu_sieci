@@ -6,3 +6,4 @@ class WSManager:
     def __init__(self, db, url):
         self.__ds = DownloadSaver(db)
         self.__cd = CommentDownloader(url)
+        self.comment_json = self.__cd.get_comment_data()
