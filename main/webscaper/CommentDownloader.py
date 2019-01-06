@@ -14,7 +14,7 @@ class CommentDownloader:
     def __init__(self, url):
         self.__url = url
         self.comment_data = {}
-        self.soup = None
+        self.__soup = None
 
     def get_comment_data(self):
         browser = webdriver.Chrome()
@@ -56,8 +56,8 @@ class CommentDownloader:
             time.sleep(1)
 
     def __get_comments(self, html):
-        self.soup = BeautifulSoup(html, 'html.parser')
-        comment_div = self.soup.find_all(class_='forum__comment', recursive=False)
+        self.__soup = BeautifulSoup(html, 'html.parser')
+        comment_div = self.__soup.find_all(class_='forum__comment', recursive=False)
         comments = {}
         for comment in comment_div:
             data = {'name': comment.find(class_='forum__comment-author-name').text.replace('.', ''),
