@@ -46,5 +46,5 @@ class DataLoader:
             graph.add_node(author)
             for replay in self.article_data[name][comment]['replay']:
                 graph.add_node(replay)
-                graph.add_edge(author, replay)
+                graph.add_edge(author, replay, weight=1.0)
         self.graphs[name] = graph
