@@ -41,8 +41,8 @@ class CommentDownloader:
             EC.presence_of_element_located((By.ID, 'comments4-1'))
         )
         self.__expand_all_comment(browser)
-        element = browser.find_element_by_class_name('forum__list')
-        self.__get_comments(element.get_attribute('innerHTML'))
+        element = browser.find_elements_by_class_name('forum__list')
+        self.__get_comments(element[-1].get_attribute('innerHTML'))
 
     def __expand_all_comment(self, browser):
         actions = ActionChains(browser)
