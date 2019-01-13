@@ -1,4 +1,6 @@
 import networkx as nx
+import collections
+import matplotlib.pyplot as plt
 
 
 class GraphAnalyzer:
@@ -16,4 +18,43 @@ class GraphAnalyzer:
                 graph[u][v]['weight'] += w
             else:
                 graph.add_edge(u, v, weight=w)
+
+        print(nx.degree_assortativity_coefficient(graph))
+        print(nx.transitivity(graph))
+        #print(nx.clustering(graph))
+		
+        G = graph
+        G.remove_nodes_from(list(nx.isolates(G)))
+        pos = nx.layout.spring_layout(G)
+
+        node_sizes = [3 + 10 * i for i in range(len(G))]
+        M = G.number_of_edges()
+
+        nodes = nx.draw_networkx_nodes(G, pos, node_size=20)
+        edges = nx.draw_networkx_edges(G, pos,arrows=True, arrowstyle='->',
+                               arrowsize=10, edge_color='black',
+                               width=2)
+        
+        degree_sequence=sorted([d for n, d in G.degree()], reverse=True)
+        degreeCount= collections.Counter(degree_sequence)
+        deg, cnt = zip(*degreeCount.items())
+
+        fig, ax = plt.subplots()
+        plt.bar(deg, cnt, width=0.80, color='b')
+
+        plt.title("Degree Histogram")
+        plt.ylabel("Count")
+        plt.xlabel("Degree")
+        plt.show()
+		
+		
+		
         return graph
+
+		
+		
+        
+        
+        
+        
+		
